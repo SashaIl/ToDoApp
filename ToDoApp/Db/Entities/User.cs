@@ -7,4 +7,5 @@ public class User
     public string HashedPass { get; set; } = "";
 
     public List<TaskUser> Tasks { get; set; } = new List<TaskUser>();
+    public List<Category> Categories { get; set; } = new List<Category>();  
 }

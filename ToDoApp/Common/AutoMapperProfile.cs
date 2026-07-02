@@ -13,6 +13,10 @@ public class AutoMapperProfile : Profile
         CreateMap<ReturnTaskDto, TaskUser>().ReverseMap();
         CreateMap<TaskBaseDto, TaskUser>().ReverseMap();
         CreateMap<ReturnUserDto, User>().ReverseMap();
+        CreateMap<CategoryDto, Category>().ReverseMap();
+        CreateMap<AddCategoryDto, Category>().ReverseMap();
+        CreateMap<TaskUser, MainTaskDto>()
+            .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
 
     }
 }

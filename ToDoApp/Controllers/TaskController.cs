@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDoApp.Common;
 using ToDoApp.Common.Dtos;
@@ -29,28 +30,53 @@ public class TaskController : ControllerBase
 
     [Authorize]
     [HttpGet("get_user_tasks/")]
-    public async Task<IActionResult> GetAllTasks(Guid userId)
+    public async Task<IActionResult> GetAllTasks(int pageSize, int page, string? search, string? category)
     {
-        ApiResponse<List<TaskBaseDto>> tasks = await _taskService.GetAllUserTasksAsync(userId);
-        return Ok(tasks);
+        ApiResponse<List<MainTaskDto>> response = await _taskService.GetAllUserTasksAsync(pageSize, page, search, category);
+        return response.IsSuccess ? Ok(response) : BadRequest(response);
     }
 
 
     [Authorize]
-    [HttpPut("update_task/")]
-    public async Task<IActionResult> UpdateTask(UpdateTaskDto updateTaskDto)
+    [HttpPut("update_task/{taskId}")]
+    public async Task<IActionResult> UpdateTask(Guid taskId, UpdateTaskDto updateTaskDto)
     {
-        ApiResponse<object> response = await _taskService.UpdateTaskAsync(updateTaskDto);
-        return Ok(response);
+        ApiResponse<object> response = await _taskService.UpdateTaskAsync(taskId, updateTaskDto);
+        return response.IsSuccess ? Ok(response) : BadRequest(response);
     }
 
 
     [Authorize]
-    [HttpDelete("delete_task/")]
-    public async Task<IActionResult> DeleteTask(DeleteTaskDto deleteTaskDto)
+    [HttpDelete("delete_task/{taskId}")]
+    public async Task<IActionResult> DeleteTask(Guid taskId)
     {
-        ApiResponse<object> response = await _taskService.DeleteTaskAsync(deleteTaskDto);
-        return Ok(response);
+        ApiResponse<object> response = await _taskService.DeleteTaskAsync(taskId);
+        return response.IsSuccess ? Ok(response) : BadRequest(response);
     }
 
+    [Authorize]
+    [HttpPost("add_category/")]
+    public async Task<IActionResult> AddCategory(AddCategoryDto addCategoryDto)
+    {
+        ApiResponse<object> response = await _taskService.AddCategoryAsync(addCategoryDto);
+        return response.IsSuccess ? Ok(response) : BadRequest(response);
+    }
+
+
+    [Authorize]
+    [HttpGet("get_user_categories/")]
+    public async Task<IActionResult> GetUserCategories()
+    {
+        ApiResponse<List<string>> response = await _taskService.GetUserCategoriesAsync();
+        return response.IsSuccess ? Ok(response) : BadRequest(response);
+    }
+
+
+    [Authorize]
+    [HttpGet("get_total_count_of_task/")]
+    public async Task<IActionResult> GetountOfTasks(string? search, string? category)
+    {
+        ApiResponse<int> response = await _taskService.GetCountOfTasksAsync(search, category);
+        return response.IsSuccess ? Ok(response) : BadRequest(response);
+    }
 }

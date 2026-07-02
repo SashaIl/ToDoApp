@@ -42,7 +42,7 @@ public class UserService : IUserService
         }
         catch(ArgumentNullException ex)
         {
-            return ApiResponse<List<ReturnUserDto>>.Fail("users is null");
+            return ApiResponse<List<ReturnUserDto>>.Fail(ex.Message);
         }
     }
 

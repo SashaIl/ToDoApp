@@ -12,8 +12,9 @@ public class JwtService : IJwtService
     private readonly string _signature;
     private readonly string _issuer;
     private readonly string _audience;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public JwtService(IConfiguration conf)
+    public JwtService(IConfiguration conf, IHttpContextAccessor httpContextAccessor)
     {
         _signature = conf.GetValue<string>("Jwt:Signature")
             ?? throw new ArgumentNullException("Jwt signature is null");
@@ -23,6 +24,8 @@ public class JwtService : IJwtService
 
         _audience = conf.GetValue<string>("Jwt:Audience")
             ?? throw new ArgumentNullException("Jwt audience is null");
+
+        _httpContextAccessor = httpContextAccessor;
 
     }
 
@@ -49,5 +52,17 @@ public class JwtService : IJwtService
 
         JwtSecurityToken token = tokenHandler.CreateJwtSecurityToken(descriptor);
         return tokenHandler.WriteToken(token);
+    }
+
+
+    public Guid GetCurrentUserId()
+    {
+        var claim = _httpContextAccessor.HttpContext?.User
+           .FindFirst("id");
+
+        if (claim == null)
+            throw new UnauthorizedAccessException("User not authenticated");
+
+        return Guid.Parse(claim.Value);
     }
 }

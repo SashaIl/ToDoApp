@@ -5,4 +5,5 @@ namespace ToDoApp.Services.Interfaces;
 public interface IJwtService
 {
     public string GenerateToken(User user);
+    public Guid GetCurrentUserId();
 }

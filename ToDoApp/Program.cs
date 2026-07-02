@@ -58,6 +58,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 
 builder.Services.AddAutoMapper(conf => conf.AddProfile(typeof(AutoMapperProfile)));
+builder.Services.AddHttpContextAccessor();
+
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -101,7 +103,22 @@ builder.Services.AddAuthentication(conf =>
 });
 
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", 
+        policy =>
+        {
+            policy.WithOrigins("*")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
+
 var app = builder.Build();
+
+app.UseCors("AllowAll");
 
 using (IServiceScope scope = app.Services.CreateScope())
 {

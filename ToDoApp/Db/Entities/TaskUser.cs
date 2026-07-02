@@ -1,5 +1,4 @@
-﻿using ToDoApp.Enums;
-
+﻿
 namespace ToDoApp.Db.Entities;
 
 public class TaskUser
@@ -8,7 +7,10 @@ public class TaskUser
     public string Name { get; set; } = "";
     public string Description { get; set; } = "";
     public DateTime CreatedDate { get; set; } = DateTime.Now;
-    public Category Category { get; set; } = Category.Other;
+
+
+    public Guid CategoryId { get; set; }
+    public Category Category { get; set; } = new Category();
 
     public Guid UserId { get; set; }
     public User User { get; set; } = default!;
