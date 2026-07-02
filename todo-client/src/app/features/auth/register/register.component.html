@@ -1,0 +1,39 @@
+<div class="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div class="bg-white p-8 rounded-xl shadow-md w-full max-w-sm">
+        <h3 class="text-2xl font-bold mb-6 text-center text-gray-800">Register</h3>
+
+        <div *ngIf="error" class="bg-red-100 text-red-600 text-sm p-3 rounded mb-4">
+            {{ error }}
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <input type="email" [(ngModel)]="email"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+
+        <div class="mb-6 relative">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2" />
+
+            <button
+                type="button"
+                (click)="showPassword = !showPassword"
+                class="absolute right-3 top-9 text-gray-400 hover:text-gray-600 text-sm">
+                {{ showPassword ? 'Hide' : 'Show' }}
+                
+            </button>
+        </div>
+
+        <button (click)="onSubmit()"
+            class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-medium">
+            Register
+        </button>
+
+        <p class="mt-4 text-center text-sm text-gray-600">
+            Already have an account?
+            <a routerLink="/login" class="text-blue-600 hover:underline">Login</a>
+        </p>
+    </div>
+</div>
