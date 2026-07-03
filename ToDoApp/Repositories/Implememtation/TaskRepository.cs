@@ -41,7 +41,7 @@ public class TaskRepository : ITaskRepository
         {
             category = category.ToLower();
             query = query
-                .Where(t => t.Name.Contains(category));
+                .Where(t => t.Category.Name == category);
         }
 
         List<TaskUser> tasks = await query

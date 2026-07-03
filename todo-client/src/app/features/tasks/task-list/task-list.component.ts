@@ -86,6 +86,8 @@ export class TaskListComponent implements OnInit {
     }
 
     loadTasks() {
+        console.log(this.selectedCategory);
+        
         this.taskService.getTasks(
             this.page,
             this.pageSize,
