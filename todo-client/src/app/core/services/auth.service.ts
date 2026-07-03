@@ -16,8 +16,10 @@ export class AuthService{
 
     login(dto: LoginDto): Observable<AuthResponse> {
         return this.http.post<AuthResponse>(`${this.baseUrl}/login/`, dto)
+        
         .pipe(
-            tap(response => this.saveToken(response.result))
+            tap(response => {this.saveToken(response.result); console.log(response)}
+            )
         );
     }
 
